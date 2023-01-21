@@ -5,11 +5,12 @@ import TableContext from './TableContext';
 function TableProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [filterValue, setFilterValue] = useState('');
 
   useEffect(() => {
-    setIsLoading(true);
     async function fetchApi() {
       const url = 'https://swapi.dev/api/planets';
+      setIsLoading(true);
       const response = await fetch(url);
       const json = await response.json();
       const { results } = json;
@@ -19,10 +20,14 @@ function TableProvider({ children }) {
     }
     fetchApi();
     setIsLoading(false);
-  }, []);
+  }, [filterValue]);
+
+  function searchFilter(e) {
+    setFilterValue(e.target.value);
+  }
   const planetsValue = useMemo(() => ({
-    planets, setPlanets, isLoading,
-  }), [planets, setPlanets, isLoading]);
+    planets, filterValue, isLoading, searchFilter,
+  }), [planets, filterValue, isLoading]);
   return (
     <TableContext.Provider value={ planetsValue }>
       { children }

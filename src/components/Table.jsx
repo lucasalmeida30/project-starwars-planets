@@ -2,9 +2,17 @@ import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
 function Table() {
-  const { planets, isLoading } = useContext(TableContext);
+  const { planets, isLoading, searchFilter, filterValue } = useContext(TableContext);
+  const filtered = planets.filter(({ name }) => name.toLowerCase().includes(filterValue));
   return (
     <div>
+      <h1>Projeto Star Wars</h1>
+      <input
+        data-testid="name-filter"
+        type="text"
+        placeholder="Digite aqui"
+        onChange={ searchFilter }
+      />
       <table>
         <tr>
           <th>Name</th>
@@ -22,7 +30,7 @@ function Table() {
           <th>URL</th>
         </tr>
         {
-          isLoading ? <h2>Carregando...</h2> : planets.map((element) => (
+          isLoading ? <h2>Carregando...</h2> : filtered.map((element) => (
             <tr key={ element.name }>
               <td>{element.name}</td>
               <td>{element.rotation_period}</td>
