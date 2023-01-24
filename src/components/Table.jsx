@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import TableContext from '../context/TableContext';
-// import FilterContext from '../context/FilterContext';
 
 function Table() {
   const [valueInput, setValueInput] = useState({
@@ -10,7 +9,6 @@ function Table() {
     valueNumber: 0,
   });
   const { planets, searchFilter, filterValue } = useContext(TableContext);
-  // const { valueInput, handleChange, filterColums } = useContext(FilterContext);
 
   const filtered = planets && planets
     .filter(({ name }) => name.toLowerCase().includes(filterValue));
