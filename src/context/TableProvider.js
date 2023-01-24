@@ -20,11 +20,12 @@ function TableProvider({ children }) {
     }
     fetchApi();
     setIsLoading(false);
-  }, [filterValue]);
+  }, []);
 
   function searchFilter(e) {
     setFilterValue(e.target.value);
   }
+
   const planetsValue = useMemo(() => ({
     planets, filterValue, isLoading, searchFilter,
   }), [planets, filterValue, isLoading]);
