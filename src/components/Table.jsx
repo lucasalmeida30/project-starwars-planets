@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TableContext from '../context/TableContext';
 
 function Table() {
@@ -8,6 +8,8 @@ function Table() {
     optionOperator: 'maior que',
     valueNumber: 0,
   });
+  const [filter, setFilter] = useState([]);
+
   const { planets, searchFilter, filterValue } = useContext(TableContext);
 
   const filtered = planets && planets
@@ -20,31 +22,39 @@ function Table() {
       [name]: value,
     });
   }
+  function filterColums() {
+    const filterMultiplos = filter.reduce((acc, curr) => acc.filter((planet) => {
+      switch (curr.optionOperator) {
+      case 'maior que':
+        return +planet[curr.optionFilter] > +curr.valueNumber;
+      case 'menor que':
+        return +planet[curr.optionFilter] < +curr.valueNumber;
+      case 'igual a':
+        return +planet[curr.optionFilter] === +curr.valueNumber;
+      default:
+        return planet;
+      }
+    }), filtered);
+    setValueInput({
+      ...valueInput,
+      planetsOptions: filterMultiplos,
+    });
+  }
+  useEffect(() => {
+    filterColums();
+  }, [filter]);
 
-  const filterColums = () => {
-    if (valueInput.optionOperator === 'maior que') {
-      const resultsPlanets = filtered
-        .filter((element) => +element[valueInput.optionFilter] > +valueInput.valueNumber);
-      setValueInput({
-        ...valueInput,
-        planetsOptions: resultsPlanets,
-      });
-    } else if (valueInput.optionOperator === 'menor que') {
-      const resultsPlanets2 = filtered
-        .filter((element) => +element[valueInput.optionFilter] < +valueInput.valueNumber);
-      setValueInput({
-        ...valueInput,
-        planetsOptions: resultsPlanets2,
-      });
-    } else {
-      const resultsPlanets3 = filtered
-        .filter((e) => +e[valueInput.optionFilter] === +valueInput.valueNumber);
-      setValueInput({
-        ...valueInput,
-        planetsOptions: resultsPlanets3,
-      });
-    }
-  };
+  function handleclick() {
+    //  valueInput.planetsOptions.filter((planet) => )
+    setFilter([
+      ...filter,
+      {
+        optionFilter: valueInput.optionFilter,
+        optionOperator: valueInput.optionOperator,
+        valueNumber: valueInput.valueNumber,
+      },
+    ]);
+  }
 
   return (
     <div>
@@ -89,7 +99,7 @@ function Table() {
       />
       <button
         data-testid="button-filter"
-        onClick={ filterColums }
+        onClick={ handleclick }
       >
         Filtrar
       </button>
