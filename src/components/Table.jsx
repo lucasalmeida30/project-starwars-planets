@@ -65,6 +65,18 @@ function Table() {
     });
   }
 
+  const removerFilter = (e) => {
+    const b = filter.filter((element) => element.optionFilter !== e.optionFilter);
+    setFilter(b);
+    const c = options.filter((d) => d === e.optionFilter);
+    setA([...a, c]);
+  };
+
+  const removerAll = () => {
+    setFilter([]);
+    setA(options);
+  };
+
   return (
     <div>
       <h1>Projeto Star Wars</h1>
@@ -82,10 +94,6 @@ function Table() {
         value={ valueInput.optionFilter }
         name="optionFilter"
       >
-
-        {/* { a.length === 0 ? options
-          .map((option) => <option key={ option }>{option}</option>)
-          : a.map((option) => <option key={ option }>{option}</option>)} */}
         {
           a.map((option) => <option key={ option }>{option}</option>)
         }
@@ -114,6 +122,21 @@ function Table() {
       >
         Filtrar
       </button>
+      <button
+        onClick={ removerAll }
+        data-testid="button-remove-filters"
+      >
+        Remover Filtros
+      </button>
+      {
+        filter.map((e) => (
+          <div key={ e.optionFilter } data-testid="filter">
+            {`${e.optionFilter}  ${e.optionOperator}  ${e.valueNumber}  `}
+            <button onClick={ () => removerFilter(e) }>Remover</button>
+          </div>
+        ))
+      }
+
       <table>
         <tr>
           <th>Name</th>
