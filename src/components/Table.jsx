@@ -9,6 +9,9 @@ function Table() {
     valueNumber: 0,
   });
   const [filter, setFilter] = useState([]);
+  const options = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const [a, setA] = useState(options);
 
   const { planets, searchFilter, filterValue } = useContext(TableContext);
 
@@ -45,7 +48,6 @@ function Table() {
   }, [filter]);
 
   function handleclick() {
-    //  valueInput.planetsOptions.filter((planet) => )
     setFilter([
       ...filter,
       {
@@ -54,6 +56,13 @@ function Table() {
         valueNumber: valueInput.valueNumber,
       },
     ]);
+
+    const removeOption = a.filter((e) => e !== valueInput.optionFilter);
+    setA(removeOption);
+    setValueInput({
+      ...valueInput,
+      optionFilter: removeOption[0],
+    });
   }
 
   return (
@@ -73,11 +82,13 @@ function Table() {
         value={ valueInput.optionFilter }
         name="optionFilter"
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+
+        {/* { a.length === 0 ? options
+          .map((option) => <option key={ option }>{option}</option>)
+          : a.map((option) => <option key={ option }>{option}</option>)} */}
+        {
+          a.map((option) => <option key={ option }>{option}</option>)
+        }
       </select>
       <select
         data-testid="comparison-filter"
@@ -85,9 +96,9 @@ function Table() {
         name="optionOperator"
         value={ valueInput.optionOperator }
       >
-        <option>maior que</option>
-        <option>menor que</option>
-        <option>igual a</option>
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
       </select>
       <input
         type="number"
