@@ -156,7 +156,7 @@ function Table() {
         {
           valueInput.planetsOptions.length === 0 ? filtered
             .map((element) => (
-              <tr key={ element.name }>
+              <tr data-testid="planet" key={ element.name }>
                 <td>{element.name}</td>
                 <td>{element.rotation_period}</td>
                 <td>{element.orbital_period}</td>
