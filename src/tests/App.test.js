@@ -46,7 +46,7 @@ describe("testando a aplicação do component table", () => {
     userEvent.type(inputFilter, 't')
     expect(inputFilter).toHaveValue('tat')
 
-    expect(planet).toHaveLength(1)
+    expect(planet).toHaveLength(10)
 
  })
 
